@@ -1,0 +1,66 @@
+import profesionales.*
+
+describe "file" {
+	
+	const capcom = new EmpresaDeServicios()
+	
+	var unsam = new Universidad()
+	var unr = new Universidad()
+	var uncr = new Universidad()
+	var unhur = new Universidad()
+	
+	var juana = new ProfesionalVinculado()
+	var melina = new ProfesionalAsociado()
+	var rocio = new ProfesionalLibre()
+	var luciana = new ProfesionalLibre()
+	
+	fixture {
+		unsam.provincia("buenosAires")
+		unsam.honorarios(3500)
+		unr.provincia("santaFe")
+		unr.honorarios(2800)
+		uncr.provincia("corrientes")
+		uncr.honorarios(4200)
+		unhur.provincia("buenosAires")
+		unhur.honorarios(8800)
+		juana.universidad(unr)
+		melina.universidad(uncr)
+		rocio.universidad(unhur)
+		rocio.honorariosPorHora(5000)
+		rocio.provinciasDondePuedeTrabajar(#{"santaFe","cordoba","buenosAires"})
+		luciana.honorariosPorHora(3200)
+		luciana.provinciasDondePuedeTrabajar(#{"santaFe","entreRiosa"})
+		luciana.universidad(unr)
+		capcom.contratar(luciana)
+		capcom.contratar(rocio)
+		capcom.contratar(melina)
+		capcom.contratar(juana)
+		capcom.honorarioDeReferencia(3500)
+		
+	}
+	test "rocio es cara"{
+		assert.equals (#{rocio} , capcom.profesionalesCaros())	
+	}
+	
+	test "universidades formadoras"{
+		assert.equals(#{unr,uncr,unhur} , capcom.universidadesFormadoras())
+	}
+	
+	test "juana es la mas barata"{
+		assert.equals(juana , capcom.elMasBarato())
+	}
+	
+	/*test "santafe y cordoba estan cubiertas pero misiones no"{
+		assert.that(capcom.provinciaEstaCubierta("cordoba"))
+		assert.that(capcom.provinciaEstaCubierta("santaFe"))
+		assert.that not(capcom.provinciaEstaCubierta("misiones"))
+	}*/
+	
+   /*test " los profesionales estudiarion en"{
+   	assert.equals(capcom.estudiaronEn(unr) ,2)
+   	assert.equals(capcom.estudiaronEn(unhur),1)
+   	assert.equals(capcom.estudiaronEn(unsam),0)
+   }*/
+		
+	
+}
